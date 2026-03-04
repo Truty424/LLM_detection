@@ -1,0 +1,55 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:01336e0f-12b1-41e6-96ff-042faa370b2d",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-02-20T09:44:44Z",
+    "properties": [
+      {
+        "name": "gitUrl",
+        "value": "https://github.com/Truty424/aes"
+      },
+      {
+        "name": "revision",
+        "value": "main"
+      },
+      {
+        "name": "commit",
+        "value": "235e7b5"
+      }
+    ]
+  },
+  "components": [
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "45185ffa-26ce-4da4-8110-e8744a1b43de",
+      "name": "AES-CBC-PKCS7",
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "aes.py",
+            "line": 8,
+            "offset": 9,
+            "additionalContext": "Cipher"
+          }
+        ]
+      },
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "block-cipher",
+          "parameterSetIdentifier": "128",
+          "mode": "cbc",
+          "padding": "pkcs7",
+          "cryptoFunctions": [
+            "decrypt",
+            "encrypt"
+          ]
+        },
+        "oid": "2.16.840.1.101.3.4.1"
+      }
+    }
+  ],
+  "dependencies": []
+}

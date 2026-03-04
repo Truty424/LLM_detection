@@ -1,0 +1,41 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:750d8690-9953-4479-87ec-8a3b13c6a148",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-03-04T13:32:52Z"
+  },
+  "components": [
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "8cb210f5-f67c-437f-9089-420e13cde762",
+      "name": "aes",
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "test/test_pyca_symmetric/aes.py",
+            "line": 8,
+            "offset": 9,
+            "additionalContext": "Cipher"
+          }
+        ]
+      },
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "primitive": "block-cipher",
+          "parameterSetIdentifier": "256",
+          "mode": "cbc",
+          "padding": "pkcs7",
+          "cryptoFunctions": [
+            "decrypt",
+            "encrypt"
+          ]
+        },
+        "oid": "2.16.840.1.101.3.4.1.42"
+      }
+    }
+  ],
+  "dependencies": []
+}

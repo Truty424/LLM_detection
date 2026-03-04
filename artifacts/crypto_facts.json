@@ -1,0 +1,30 @@
+{
+  "components": [
+    {
+      "type": "cryptographic-asset",
+      "name": "aes",
+      "assetType": "algorithm",
+      "primitive": "block-cipher",
+      "parameterSetIdentifier": 256,
+      "mode": "cbc",
+      "padding": "pkcs7",
+      "cryptoFunctions": [
+        "decrypt",
+        "encrypt"
+      ],
+      "location": "aes.py",
+      "additionalContext": "cipher",
+      "evidence": {
+        "occurrences": [
+          {
+            "location": "test/test_pyca_symmetric/aes.py",
+            "line": 8,
+            "offset": 9,
+            "additionalContext": "Cipher"
+          }
+        ]
+      },
+      "sourceFile": "test/test_pyca_symmetric/aes.py"
+    }
+  ]
+}

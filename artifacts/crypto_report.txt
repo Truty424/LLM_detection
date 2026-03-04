@@ -1,0 +1,16 @@
+
+### FILE: test/test_pyca_symmetric/aes.py
+COMPONENT
+programming language: Python
+type: cryptographic-asset
+name: AES
+assetType: algorithm
+primitive: block-cipher
+parameterSetIdentifier: 256
+mode: cbc
+padding: pkcs7
+cryptoFunctions: encrypt, decrypt
+
+EVIDENCE
+location: aes.py
+additionalContext: cipher

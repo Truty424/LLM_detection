@@ -1,0 +1,20 @@
+(BlockCipher) Camellia
+    └─ (Encrypt) ENCRYPT
+    └─ (Mode) OFB
+
+(BlockCipher) AES-CBC-PKCS7
+    └─ (Encrypt) ENCRYPT
+    └─ (BlockSize) 128
+    └─ (Padding) PKCS7
+       └─ (BlockSize) 80
+    └─ (Mode) CBC
+    └─ (Decrypt) DECRYPT
+
+#chacha
+ (SecretKey) ChaCha20
+    └─ (Encrypt) ENCRYPT
+    └─ (AuthenticatedEncryption) ChaCha20Poly1305
+       └─ (MessageDigest) Poly1305
+    └─ (Decrypt) DECRYPT
+    └─ (KeyGeneration) KEYGENERATION
+
