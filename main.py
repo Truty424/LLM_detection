@@ -1,63 +1,56 @@
-import sys
-import json
-from pathlib import Path
-from engine.detector import detect_crypto_report
-from parser.repo_parser import RepoParser
+
+import argparse
 import time
+from pathlib import Path
+from parser.repo_parser import RepoParser
 
-DEFAULT_INPUT = "test/test_pyca_symmetric"
-DEFAULT_OUTPUT = "artifacts/crypto_report.txt"
-#DEFAULT_OUTPUT = "artifacts/crypto_report.json"
+# Model configuration
 OLLAMA_BASE = "http://localhost:11434"
-# MODEL = "qwen2.5:7b-instruct"
 MODEL = "qwen2.5-coder:7b"
-#MODEL = "qwen2.5-coder:3b"
-temperature = 0
-timeout = 180
-num_ctx = 4096
-
-def iter_py_files(path: Path) -> list[Path]:
-    if path.is_dir():
-        return sorted(path.rglob("*.py"))
-    return [path]
+TEMPERATURE = 0
+TIMEOUT = 180
+NUM_CTX = 4096
 
 
 def main():
-    in_path = Path(sys.argv[1] if len(sys.argv) > 1 else DEFAULT_INPUT)
-    out_file = Path(sys.argv[2] if len(sys.argv) > 2 else DEFAULT_OUTPUT)
+    parser = argparse.ArgumentParser(
+        description="Detect cryptographic assets in a local source code repository."
+    )
 
-    py_files = iter_py_files(in_path)
-    if not py_files:
-        raise SystemExit(f"No .py files found under: {in_path}")
+    parser.add_argument(
+        "repo_path",
+        help="Path to the local repository"
+    )
 
-    all_reports: list[str] = []
+    parser.add_argument(
+        "--output",
+        default="results/results.txt",
+        help="Path to the output file (default: results.txt)"
+    )
 
-    for f in py_files:
-        report = detect_crypto_report(
-            input_path=str(f),
-            ollama_base=OLLAMA_BASE,
-            model=MODEL,
-            temperature=0,
-            timeout=180,
-            num_ctx=4096,   #4096
-        )
-        all_reports.append(report)
-        clean = report.strip().replace("```json", "").replace("```", "").strip()
-        #all_reports.extend(json.loads(clean))
+    args = parser.parse_args()
 
-    out_file.write_text("".join(all_reports), encoding="utf-8")
-    print(f"Saved raw LLM reports to: {out_file}")
-    # for debugging purpose
-    # print("Saved LLM output to:", out_file)
-    # with open(out_file, "w", encoding="utf-8") as f:
-    #     json.dump(all_reports, f, indent=2)
+    repo_path = Path(args.repo_path).expanduser().resolve()
+
+    if not repo_path.is_dir():
+        parser.error(f"Repository directory does not exist: {repo_path}")
+
+    start_time = time.time()
+
+    repo_parser = RepoParser(
+        str(repo_path),
+        args.output,
+        OLLAMA_BASE,
+        MODEL,
+        TEMPERATURE,
+        TIMEOUT,
+        NUM_CTX
+    )
+
+    repo_parser.run()
+
+    print(f"Execution time: {time.time() - start_time:.2f} seconds")
+
 
 if __name__ == "__main__":
-    # main()
-    start_time = time.time()
-    repo_path = "/Users/adam/PycharmProjects/FBK /repo/flink"
-    out_file = "parser_crypto.txt"
-    repo_parser = RepoParser(repo_path, out_file, OLLAMA_BASE, MODEL, temperature, timeout, num_ctx)
-    repo_parser.run()
-    end_time = time.time()
-    print("EXECUTION TIME: ", end_time - start_time)
+    main()

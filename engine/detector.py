@@ -45,7 +45,8 @@ def detect_crypto_report(
 
         messages = prompt_builder(filename, code)
         report = call_ollama(ollama_base, model, messages, temperature, timeout, num_ctx)
-
+        print("CODE:")
+        print(code)
         reports.append(report)
 
     return reports

@@ -60,7 +60,8 @@ class JavaParser(LanguageParser):
 
     def find_parent_methods(self, node):
         while node is not None:
-            if node.type == "method_declaration":
+            # if node.type == "method_declaration":
+            if node.type in ("method_declaration", "constructor_declaration"):
                 return node
             node = node.parent
         return None
