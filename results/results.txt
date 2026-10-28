@@ -1,0 +1,183 @@
+
+FILE: /Users/adam/PycharmProjects/FBK /repo/flink/flink-table/flink-table-common/src/main/java/org/apache/flink/table/utils/EncodingUtils.java
+CALL: MessageDigest.getInstance("MD5").digest(string.getBytes(UTF_8))
+KEY: (6244, 6517)
+METHOD:
+public static byte[] md5(String string) {
+        try {
+            return MessageDigest.getInstance("MD5").digest(string.getBytes(UTF_8));
+        } catch (NoSuchAlgorithmException e) {
+            throw new TableException("Unsupported MD5 algorithm.", e);
+        }
+    }
+................................................................................
+
+LLM: ```json
+[
+  {
+    "COMPONENT": {
+      "name": "MD5",
+      "primitive": "hash",
+      "parameterSetIdentifier": 128,
+      "mode": null,
+      "padding": null,
+      "cryptoFunctions": ["digest"]
+    },
+    "EVIDENCE": {
+      "additionalContext": ["MessageDigest.getInstance(\"MD5\").digest(string.getBytes(UTF_8))"]
+    }
+  }
+]
+```
+================================================================================
+
+FILE: /Users/adam/PycharmProjects/FBK /repo/flink/flink-table/flink-table-runtime/src/main/java/org/apache/flink/table/runtime/functions/SqlFunctionUtils.java
+CALL: MessageDigest.getInstance(algorithm)
+                            .digest(strToBytesWithCharset(str, charsetName))
+KEY: (18208, 18661)
+METHOD:
+public static String hash(String algorithm, String str, String charsetName) {
+        try {
+            byte[] digest =
+                    MessageDigest.getInstance(algorithm)
+                            .digest(strToBytesWithCharset(str, charsetName));
+            return EncodingUtils.hex(digest);
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalArgumentException("Unsupported algorithm: " + algorithm, e);
+        }
+    }
+................................................................................
+
+LLM: ```json
+[
+  {
+    "COMPONENT": {
+      "name": "unknown",
+      "primitive": "hash",
+      "parameterSetIdentifier": null,
+      "mode": null,
+      "padding": null,
+      "cryptoFunctions": ["digest"]
+    },
+    "EVIDENCE": {
+      "additionalContext": ["MessageDigest.getInstance(algorithm).digest(strToBytesWithCharset(str, charsetName))"]
+    }
+  }
+]
+```
+================================================================================
+
+FILE: /Users/adam/PycharmProjects/FBK /repo/flink/flink-table/flink-table-runtime/src/main/java/org/apache/flink/table/data/binary/BinaryStringDataUtil.java
+CALL: hash(str, MessageDigest.getInstance(algorithm))
+KEY: (7689, 7880)
+METHOD:
+public static BinaryStringData hash(BinaryStringData str, String algorithm)
+            throws NoSuchAlgorithmException {
+        return hash(str, MessageDigest.getInstance(algorithm));
+    }
+................................................................................
+
+LLM: ```json
+[
+  {
+    "COMPONENT": {
+      "name": "unknown",
+      "primitive": "hash",
+      "parameterSetIdentifier": null,
+      "mode": null,
+      "padding": null,
+      "cryptoFunctions": ["digest"]
+    },
+    "EVIDENCE": {
+      "additionalContext": ["MessageDigest.getInstance(algorithm)"]
+    }
+  }
+]
+```
+================================================================================
+
+FILE: /Users/adam/PycharmProjects/FBK /repo/flink/flink-python/src/main/java/org/apache/flink/python/util/PythonDependencyUtils.java
+CALL: MessageDigest.getInstance(HASH_ALGORITHM)
+KEY: (16646, 17179)
+METHOD:
+private String generateUniqueFileKey(String prefix, String hashString) {
+            MessageDigest messageDigest;
+            try {
+                messageDigest = MessageDigest.getInstance("SHA-256");
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
+            }
+            messageDigest.update(hashString.getBytes(StandardCharsets.UTF_8));
+
+            return String.format(
+                    "%s_%s", prefix, StringUtils.byteToHexString(messageDigest.digest()));
+        }
+................................................................................
+
+LLM: ```json
+[
+  {
+    "COMPONENT": {
+      "name": "SHA-256",
+      "primitive": "hash",
+      "parameterSetIdentifier": 256,
+      "mode": null,
+      "padding": null,
+      "cryptoFunctions": ["digest"]
+    },
+    "EVIDENCE": {
+      "additionalContext": ["messageDigest.digest()"]
+    }
+  }
+]
+```
+```json
+[
+  {
+    "COMPONENT": {
+      "name": "digest",
+      "type": "digest",
+      "size": "256"
+    },
+    "EVIDENCE": {
+      "additionalContext": [
+        "messageDigest.digest()"
+      ]
+    }
+  }
+]
+```
+================================================================================
+
+FILE: /Users/adam/PycharmProjects/FBK /repo/flink/flink-runtime/src/main/java/org/apache/flink/runtime/blob/BlobUtils.java
+CALL: MessageDigest.getInstance(HASHING_ALGORITHM)
+KEY: (13979, 14301)
+METHOD:
+static MessageDigest createMessageDigest() {
+        try {
+            return MessageDigest.getInstance("SHA-1");
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(
+                    "Cannot instantiate the message digest algorithm " + "SHA-1", e);
+        }
+    }
+................................................................................
+
+LLM: ```json
+[
+  {
+    "COMPONENT": {
+      "name": "SHA-1",
+      "primitive": "hash",
+      "parameterSetIdentifier": 160,
+      "mode": null,
+      "padding": null,
+      "cryptoFunctions": ["digest"]
+    },
+    "EVIDENCE": {
+      "additionalContext": ["MessageDigest.getInstance(\"SHA-1\")"]
+    }
+  }
+]
+```
+================================================================================
